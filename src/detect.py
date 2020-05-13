@@ -71,12 +71,10 @@ def warp(img):
     #print(img.shape)
     offset = 300
     src = np.float32(
-            [
-            [200, 150],
-            [200, 330],
-            [860, 330],
-            [860, 150]
-            ])
+           [[400, 350],
+             [480, 270],
+             [550, 270],
+             [680, 320]])
     #print(src)
     dst = np.float32(
             [[(width / 4), 0],
@@ -90,7 +88,13 @@ def warp(img):
     
     return M, Minv, warped
 
-
+A = (400, 350)       # bottom left
+B = (450, 270)          # top left
+C = (550, 270)          # top right
+D = (680, 320)     # bottom right
+triangle = np.array([[A,B,C,D]], np.int32)
+im = cv2.fillPoly(undist_pic, triangle, 255)
+display(img, im, 'mask')
 #M, Minv, warp = warp(undist_pic)
 #display(img, warp, 'warp')
 
@@ -194,13 +198,7 @@ def combine_sobel_hls_threshold(img):
     combined_binary = np.zeros_like(sxbinary)
     combined_binary[((mag_binary == 1) & (dir_binary == 1)) | ((gradx == 1) & (grady == 1))] = 1
     #  ((s_binary == 1) & (sxbinary == 1)) | 
-    #fig, ax = plt.subplots(2)
-    #c= mpimg.imread(combined_binary)
-    #ax.imshow(c)
-    #plt.plot()
-    #exit()
-    #print(combined_binary)
-    #exit()
+    
     return combined_binary
 
 
